@@ -7,6 +7,10 @@ module.exports = {
     host: process.env.DBHOST,
     dialect: process.env.DBDIALECT,
     logging: false,
+    define: {
+      createdAt: "created_at",
+      updatedAt: "updated_at"
+    }
   },
   test: {
     username: "root",
