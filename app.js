@@ -17,7 +17,7 @@ app.use(express.urlencoded({
 }));
 app.use(morgan('dev'));
 app.use(express.static(path.join(__dirname, "public")));
-
+app.use('/api', require('./routes'));
 
 app.listen(port, ()=>{
     console.log('Server running on port '+port);

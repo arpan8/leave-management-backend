@@ -1,0 +1,1 @@
+const Leave = require('../../models').leave;
