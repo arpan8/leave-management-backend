@@ -21,7 +21,8 @@ module.exports = (sequelize, DataTypes) => {
     profile_pic: DataTypes.STRING,
     designation_id: DataTypes.INTEGER,
     no_of_sick_leaves: DataTypes.DECIMAL,
-    no_of_casual_leaves: DataTypes.DECIMAL
+    no_of_casual_leaves: DataTypes.DECIMAL,
+    password: DataTypes.STRING
   }, {
     sequelize,
     modelName: 'employee',

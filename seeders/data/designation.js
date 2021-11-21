@@ -23,5 +23,8 @@ module.exports=[
     {
         name: "Frontend Developer",
     },
+    {
+        name: "Admin"
+    }
 
 ]
