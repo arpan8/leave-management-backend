@@ -1,7 +1,7 @@
 const Employee = require('../../models').employee;
 const { hashPassword, verifyPassword } = require('../../services/password');
 const jwt = require('jsonwebtoken');
-
+const Designation = require('../../models').designation;
 async function addEmployee(req, res){
     try {
         const rb = req.body;
@@ -70,7 +70,15 @@ async function signIn(req, res){
             delete employee.dataValues.password;
 
             let token = jwt.sign({
-                employee: employee
+                id: employee.id,
+                emp_id: employee.emp_id,
+                name: employee.name,
+                email: employee.email,
+                mobile_number: employee.mobile_number,
+                profile_pic: employee.profile_pic,
+                no_of_sick_leaves: employee.no_of_sick_leaves,
+                no_of_casual_leaves: employee.no_of_casual_leaves,
+                designation_id: employee.designation_id
             }, process.env.JWTSECRET, { expiresIn: '1h' });
 
             return res.json({
@@ -116,10 +124,23 @@ function verifyjwtToken (req, res, next) {
 
 async function employeeDetails(req, res){
     try {
+
+        let id = req.user.id;
+
+        let employee = await Employee.findOne({
+            where:{
+                id
+            },
+            attributes:{ exclude:['created_at','updated_at','password']},
+            include:[{
+                model: Designation
+            }]
+        });
+
         res.json({
             success: true,
             msg: 'User feteched successfully',
-            details: req.user
+            details: employee
         })
     } catch (error) {
         console.log(error)
