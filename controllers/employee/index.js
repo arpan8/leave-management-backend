@@ -76,8 +76,8 @@ async function signIn(req, res){
                 email: employee.email,
                 mobile_number: employee.mobile_number,
                 profile_pic: employee.profile_pic,
-                no_of_sick_leaves: employee.no_of_sick_leaves,
-                no_of_casual_leaves: employee.no_of_casual_leaves,
+                // no_of_sick_leaves: employee.no_of_sick_leaves,
+                // no_of_casual_leaves: employee.no_of_casual_leaves,
                 designation_id: employee.designation_id
             }, process.env.JWTSECRET, { expiresIn: '1h' });
 

@@ -21,10 +21,9 @@ module.exports = (sequelize, DataTypes) => {
     type_of_day: DataTypes.STRING,
     leave_type: DataTypes.STRING,
     reason: DataTypes.TEXT,
-    approved_by: DataTypes.INTEGER,
-    approved_date: DataTypes.DATE,
     leave_status: DataTypes.STRING,
-    leave_apply_date: DataTypes.DATE
+    leave_apply_date: DataTypes.DATE,
+    work_resume: DataTypes.DATE
   }, {
     sequelize,
     modelName: 'leave',
