@@ -11,6 +11,9 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+      models.leave.hasMany(models.all_leave_status,{
+        foreignKey: 'leave_id'
+      })
     }
   };
   leave.init({
