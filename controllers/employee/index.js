@@ -2,6 +2,12 @@ const Employee = require('../../models').employee;
 const { hashPassword, verifyPassword } = require('../../services/password');
 const jwt = require('jsonwebtoken');
 const Designation = require('../../models').designation;
+const upload = require('../../services/s3-bucket');
+const getSignedURL = require('../../services/s3-url');
+const fs = require("fs");
+const util = require("util");
+const unlinkFile = util.promisify(fs.unlink);
+
 async function addEmployee(req, res){
     try {
         const rb = req.body;
@@ -147,7 +153,42 @@ async function employeeDetails(req, res){
     }
 }
 
+async function empImgUpload (request,res) {
+
+	try{
+
+        //console.log('file',request.file)
+		let fileName = request.file.filename;
+        
+		let fileExtension = fileName.split('.').pop();
+
+		const allowedExtensions = ["jpg","jpeg","png","svg"];
+
+		const shouldAcceptFileType = allowedExtensions.includes(fileExtension.toLowerCase());
+
+    	if(!shouldAcceptFileType) return error({}, `${fileExtension} files are not allowed`, 409)(h);
+
+		let uploadResult = await upload(request.file,fileName);
+		
+		//console.log('result', uploadResult);
+
+		let signedUrl = getSignedURL(uploadResult.Location,8760);
+
+        await unlinkFile(request.file.path);
+
+        res.json({
+            success: true,
+            url:uploadResult.Location,
+            signedUrl
+        });
+
+	}catch(err){
+		console.log(err);
+	}
+}
+
 module.exports={
+    empImgUpload,
     addEmployee,
     signIn,
     verifyjwtToken,
