@@ -7,7 +7,7 @@ const getSignedURL = require('../../services/s3-url');
 const fs = require("fs");
 const util = require("util");
 const unlinkFile = util.promisify(fs.unlink);
-
+const { addFileToQueue } = require('../../services/queue/create')
 async function addEmployee(req, res){
     try {
         const rb = req.body;
@@ -159,27 +159,14 @@ async function empImgUpload (request,res) {
 
         //console.log('file',request.file)
 		let fileName = request.file.filename;
+
+        addFileToQueue({file: request.file})
         
-		let fileExtension = fileName.split('.').pop();
-
-		const allowedExtensions = ["jpg","jpeg","png","svg"];
-
-		const shouldAcceptFileType = allowedExtensions.includes(fileExtension.toLowerCase());
-
-    	if(!shouldAcceptFileType) return error({}, `${fileExtension} files are not allowed`, 409)(h);
-
-		let uploadResult = await upload(request.file,fileName);
 		
-		//console.log('result', uploadResult);
-
-		let signedUrl = getSignedURL(uploadResult.Location,8760);
-
-        await unlinkFile(request.file.path);
 
         res.json({
             success: true,
-            url:uploadResult.Location,
-            signedUrl
+            msg: `${fileName} added successfully`
         });
 
 	}catch(err){

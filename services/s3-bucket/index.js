@@ -37,8 +37,9 @@ async function upload(file,filename, folder=null, rawFileName=false){
 	await s3.upload(params,options)
 	.promise()
 	.then((res)=>{
+		console.log(res)
 		fileResp = res;
-	})
+	}).catch(err=>console.log(err))
 
 	return fileResp;
 }
